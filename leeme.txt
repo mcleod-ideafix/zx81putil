@@ -1,0 +1,73 @@
+Fichero LEEME de ZX81PUTIL. v1.0.2
+(C)2013 Miguel Angel Rodríguez Jódar. http://www.zxprojects.com
+
+
+zx81putil es una utilidad de linea de comandos para realizar algunas operaciones con ficheros que
+contienen software para el Sinclair ZX81.
+
+Estas operaciones son:
+- Leer un fichero de sonido en formato WAV conteniendo una grabación de una cinta de ZX81,
+  y generar un fichero imagen de memoria .P . Esta es la operación por defecto si no se especifica
+  ninguna en la línea de comandos.
+
+- Leer un fichero imagen de memoria .P y generar un fichero de sonido en formato WAV apto para ser
+  usado en un ZX81 reproduciéndolo a través de su entrada EAR
+
+- Leer un fichero imagen de memoria .P y generar un fichero imagen de cinta en formato TZX v1.20
+  apto para ser reproducido por cualquier utilidad que permita la reproducción de este tipo de
+  ficheros.
+
+- Reproducir el contenido de un fichero imagen de memoria .P a través de la salida de sonido de su
+  ordenador en formato de carga estándar para ZX81.
+
+Adicionalmente, durante cualquiera de estas operaciones el usuario tiene la opción de obtener por
+pantalla un volcado del buffer de video del ZX81 tal y como está guardado en el fichero de entrada,
+o un volcado del área donde se guarda el programa BASIC.
+
+El formato de uso completo es el siguiente:
+
+zx81putil [options] input_filename
+  OPTIONS:
+   -o outputfile  : overrides default file name for output.
+   -w2p           : converts a WAV file into P file (default option)
+   -p2w           : converts a P file into a WAV file
+   -tzx           : converts a P file into a TZX file
+   -play          : plays a P file thru the computer audio system
+   -scr           : shows the screen buffer contents as saved into the file
+   -bas           : shows the BASIC listing as saved into the file
+   input_filename : WAV or P file to convert/play (default: WAV file is assumed)
+
+Junto con el programa se distribuye el fichero SDL.dll, necesario para poder usar la opción de 
+reproducción de audio.
+
+Notas:
+
+- El fichero WAV de entrada debe tener formato PCM, 44100Hz y 16 bits. Puede ser mono o estéreo, 
+  aunque se prefiere que sea mono.
+
+- Si en la operación de convertir un fichero WAV a .P el programa parece no dar ningún error, pero
+  no aparece ningún fichero .P en el disco, especificar el nombre mediante la opción -o . Esto
+  ocurre si el nombre de programa almacenado en los primeros bytes de la grabación contiene caracteres
+  no permitidos como nombre de archivo en el sistema de ficheros (tales como * ?).
+
+  Si en la operación de convertir un fichero WAV a .P se produjo un error de lectura achacable a un
+  defecto en el contenido del archivo de sonido, la operación abortará, y se mostrará una etiqueta 
+  de tiempo indicando dónde se produjo el error. Es posible entonces cargar el fichero de sonido en un
+  editor de sonido, ir hasta la marca de tiempo indicada y tratar de mejorar la señal de audio en esa
+  zona (o en general)
+  La etiqueta de tiempo tiene el formato [minuto:segundo] con los segundos expresados con hasta tres
+  decimales.
+
+- En el listado BASIC se ha intentado que en las líneas REM que almacenan código máquina, éste 
+  aparezca como una secuencia de bytes mostrados en hexadecimal. Sin embargo, si dicha secuencia
+  incluye el carácter de retorno de carro (0x76 en el ZX81), el generador del volcado BASIC
+  interpretará que comienza una nueva línea BASIC y no seguirá mostrando los bytes en hexadecimal,
+  sino que revertirá al modo normal, donde se muestran tokens y caracteres.
+
+- Tanto en el listado BASIC como en el volcado de la pantalla del ZX81, los caracteres no disponibles
+  en el código ASCII estándar se han sustituido por el símbolo '?'. Esto afecta sobre todo a los
+  caracteres de bloque, que no podrán ser mostrados de forma adecuada.
+
+- El fichero TZX generado es conforme a la especificación 1.20 del formato TZX. En particular, el
+  fichero generado usa el ID 0x19 . Es posible que algún software de reproducción no sea capaz de
+  interpretar este ID.
