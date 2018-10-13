@@ -1,6 +1,6 @@
 # zx81putil
 
-zx81putil is a commandline utility aided to perform some operations with fiels that contains software
+zx81putil is a commandline utility aided to perform some operations with files that contain software
 for the Sinclair ZX81 computer.
 
 These operations include:
